@@ -10,9 +10,10 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
         var numberBufferStart = -1;
         var infixCalculation = preprocessor.Process(infixCalculationSegments);
 
-        foreach (var position in Enumerable.Range(0, infixCalculation.Length))
+        foreach (var i in Enumerable.Range(0, infixCalculation.Length))
         {
-            var character = infixCalculation[position];
+            var character = infixCalculation[i];
+            var position = i + 1;
 
             if (!CalculatorConstants.ValidCharacters.Contains(character))
                 throw new CalculatorException(position, $"Invalid character. {character} is not valid calculation character.  Please check calculation and try again.");
