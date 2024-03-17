@@ -25,7 +25,7 @@ public static class TokenExtensions
                 operators.Push(token);
             }
 
-            if (token .IsLeftParenthesis)
+            if (token.IsLeftParenthesis)
                 operators.Push(token);
 
             if (token.IsRightParenthesis)

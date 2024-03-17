@@ -49,7 +49,7 @@ public readonly record struct CalculationToken(
         Type is TokenType.LeftParenthesis;
 
     public bool IsRightParenthesis =>
-        Type is TokenType.LeftParenthesis;
+        Type is TokenType.RightParenthesis;
 
     public bool HasLeftAssociativity =>
         Associativity == Associativity.Left;

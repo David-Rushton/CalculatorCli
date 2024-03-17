@@ -11,7 +11,7 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/CalculatorCli/bin/Debug/net8.0/CalculatorCli.dll",
             "args": [
-                "(1 + 3) * 2"
+                "3 + 4 x 2 % ( 1 - 5 ) ^ 2 ^ 3"
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
