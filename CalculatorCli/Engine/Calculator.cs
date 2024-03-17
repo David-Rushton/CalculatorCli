@@ -22,15 +22,15 @@ public class Calculator(Parser parser)
                 continue;
             }
 
-            var left = stack.PopAndParse();
-            var right = stack.PopAndParse();
+            var y = stack.PopAndParse();
+            var x = stack.PopAndParse();
             var result = token.Value switch
             {
-                "+" => left + right,
-                "-" => left - right,
-                "*" => left * right,
-                "/" => left / right,
-                "^" => Math.Pow(left, right),
+                "+" => x + y,
+                "-" => x - y,
+                "*" => x * y,
+                "/" => x / y,
+                "^" => Math.Pow(x, y),
                 _ => throw new CalculatorException(token.Position, "Expected operator")
             };
 
