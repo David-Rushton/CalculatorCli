@@ -1,4 +1,4 @@
-# Calculator CLI#
+# Calculator CLI
 
 [![.NET](https://github.com/David-Rushton/CalculatorCli/actions/workflows/dotnet.yml/badge.svg)](https://github.com/David-Rushton/CalculatorCli/actions/workflows/dotnet.yml)
 
