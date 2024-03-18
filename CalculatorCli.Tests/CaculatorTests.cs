@@ -13,6 +13,7 @@ public class CalculatorTests
     [Test]
     [TestCase("1 + 1", 2)]
     [TestCase("1+1", 2)]
+    [TestCase("1/2", .5)]
     [TestCase("1+(1)", 2)]
     [TestCase("1+((1))", 2)]
     [TestCase("10 / 2", 5)]
@@ -25,8 +26,7 @@ public class CalculatorTests
     [TestCase("1 - 5", -4)]
     [TestCase("5 - 1", 4)]
     [TestCase("3 + 4 * 2 / (1 - 5)", 1)]
-    // TODO: Verify this really is 3.
-    [TestCase("3 + 4 * 2 / (1 - 5) ^ 2 ^ 3", 3)]
+    [TestCase("3 + 4 * 2 / (1 - 5) ^ 2 ^ 3", 3.0001220703125)]
     public void Calculate_WhenWellFormed_ReturnsExpectedResult(string calculation, double expected)
     {
         var actual = _calculator.Calculate([calculation]);
