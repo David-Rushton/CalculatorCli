@@ -23,7 +23,6 @@ public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.
         }
         catch (CalculatorException e)
         {
-            // TODO: Pretty print our exceptions.
             AnsiConsole.WriteException(e);
             return 1;
         }
