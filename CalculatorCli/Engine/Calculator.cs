@@ -12,10 +12,13 @@ public class Calculator(Parser parser)
     {
         var infixTokens = parser.Parse(infixCalculationSegments);
         var rpnTokens = infixTokens.ToReversePolishNotation();
+        var rpnNotation = string.Join(CalculatorConstants.Space, rpnTokens.Select(t => t.Value));
         var stack = new Stack<CalculationToken>(rpnTokens);
         var rnpNotation = string.Join(CalculatorConstants.Space.ToString(), rpnTokens.Select(t => t.Value));
 
         VerboseConsole.WriteLine($"Canonical rnp notation: {rnpNotation}");
+
+        VerboseConsole.WriteLine($"canonical rnp notation: {rpnNotation}");
 
         foreach (var token in rpnTokens)
         {
@@ -37,7 +40,8 @@ public class Calculator(Parser parser)
                 _ => throw new CalculatorException(token.Position, "Expected operator")
             };
 
-            VerboseConsole.WriteLine($" - {x} {token.Value} {y} = {result}");
+            VerboseConsole.WriteLine($"- {x} {token.Value} {y} = {result}");
+
             stack.Push(new(token.Position, TokenType.Number, result.ToString()));
         }
 

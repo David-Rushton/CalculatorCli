@@ -10,7 +10,10 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
         var numberBufferStart = -1;
         var infixCalculation = preprocessor.Process(infixCalculationSegments);
 
-        VerboseConsole.WriteLine($"Canonical infix statement: {infixCalculation}");
+        if (!ParenthesesBalanced(infixCalculation))
+            throw new CalculatorException(position: 1, $"Unbalanced parentheses.  Check calculation and try again.");
+
+        VerboseConsole.WriteLine($"canonical infix notation: {infixCalculation}");
 
         foreach (var i in Enumerable.Range(0, infixCalculation.Length))
         {
@@ -51,5 +54,9 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
             CalculatorConstants.Parentheses.Contains(character)
             || CalculatorConstants.Operators.Contains(character)
             || character is CalculatorConstants.Space;
+
+        static bool ParenthesesBalanced(string infixCalculation) =>
+            infixCalculation.Count(c => c == CalculatorConstants.LeftParentheses)
+                == infixCalculation.Count(c => c == CalculatorConstants.RightParentheses);
     }
 }
