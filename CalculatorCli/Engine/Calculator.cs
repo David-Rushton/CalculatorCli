@@ -14,6 +14,9 @@ public class Calculator(Parser parser)
         var rpnTokens = infixTokens.ToReversePolishNotation();
         var rpnNotation = string.Join(CalculatorConstants.Space, rpnTokens.Select(t => t.Value));
         var stack = new Stack<CalculationToken>(rpnTokens);
+        var rnpNotation = string.Join(CalculatorConstants.Space.ToString(), rpnTokens.Select(t => t.Value));
+
+        VerboseConsole.WriteLine($"Canonical rnp notation: {rnpNotation}");
 
         VerboseConsole.WriteLine($"canonical rnp notation: {rpnNotation}");
 
@@ -42,6 +45,7 @@ public class Calculator(Parser parser)
             stack.Push(new(token.Position, TokenType.Number, result.ToString()));
         }
 
+        VerboseConsole.WriteLine(string.Empty);
         return stack.PopAndParse();
     }
 }
