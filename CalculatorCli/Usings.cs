@@ -1,3 +1,4 @@
+global using CalculatorCli;
 global using CalculatorCli.Commands;
 global using CalculatorCli.Engine;
 global using CalculatorCli.Model;

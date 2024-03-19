@@ -8,7 +8,7 @@ public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.
         [Description("Expressed in [link=https://en.wikipedia.org/wiki/Infix_notation]infix notation[/]")]
         public required string[] Calculation { get; init; }
 
-        [CommandOption("-V|--verbose")]
+        [CommandOption("--verbose")]
         [Description("Shows our working")]
         public bool IsVerbose { get; set; }
     }

@@ -10,6 +10,8 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
         var numberBufferStart = -1;
         var infixCalculation = preprocessor.Process(infixCalculationSegments);
 
+        VerboseConsole.WriteLine($"Canonical infix statement: {infixCalculation}");
+
         foreach (var i in Enumerable.Range(0, infixCalculation.Length))
         {
             var character = infixCalculation[i];
