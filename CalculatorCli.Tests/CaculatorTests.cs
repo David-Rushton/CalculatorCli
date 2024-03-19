@@ -38,6 +38,7 @@ public class CalculatorTests
     [TestCase("1 +")]
     [TestCase("1 + y")]
     [TestCase("1 + (2 +")]
+    [TestCase("(()) 1 + 1")]
     [TestCase("1 + )")]
     public void Calculate_WhenMalformed_ThrowsCalculatorException(string calculation)
     {

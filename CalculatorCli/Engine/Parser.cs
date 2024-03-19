@@ -13,6 +13,29 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
         if (!ParenthesesBalanced(infixCalculation))
             throw new CalculatorException(position: 1, $"Unbalanced parentheses.  Check calculation and try again.");
 
+
+        // @"^\s*=?[\+\-\*\/^\d\.\s()]+$"
+        // valid notation characters
+
+        // 1 + 2 + ( 2 * ( 6 * 8 ) )
+        // 1 + ((2 * 3) + (5 +  3))
+        // 1 + ( 2 * 3 ) / 4
+
+        // num  > op lp rp
+        // op   > num lp
+        // lp   > lp num op
+        // rp   > op rp
+
+
+        // convert to postfix
+        // read
+        // loop
+        //  operand push
+        //  number pop two
+        //  insert two with op inside parentheses
+        //  push back to stack
+
+
         return GetTokens(infixCalculation);
 
         static bool ParenthesesBalanced(string infixCalculation) =>
