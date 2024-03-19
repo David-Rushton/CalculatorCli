@@ -12,6 +12,7 @@ public class CalculatorTests
 
     [Test]
     [TestCase("1 + 1", 2)]
+    [TestCase("1 + -1", 0)]
     [TestCase("1+1", 2)]
     [TestCase("1/2", .5)]
     [TestCase("1+(1)", 2)]
@@ -30,8 +31,6 @@ public class CalculatorTests
     public void Calculate_WhenWellFormed_ReturnsExpectedResult(string calculation, double expected)
     {
         var actual = _calculator.Calculate([calculation]);
-
-
         Assert.That(actual, Is.EqualTo(expected));
     }
 
@@ -39,7 +38,6 @@ public class CalculatorTests
     [TestCase("1 +")]
     [TestCase("1 + y")]
     [TestCase("1 + (2 +")]
-    // TODO: Failing
     [TestCase("1 + )")]
     public void Calculate_WhenMalformed_ThrowsCalculatorException(string calculation)
     {

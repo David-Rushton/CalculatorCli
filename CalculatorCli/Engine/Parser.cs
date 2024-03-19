@@ -1,4 +1,6 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Transactions;
 
 namespace CalculatorCli.Engine;
 
@@ -6,12 +8,22 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
 {
     public IEnumerable<CalculationToken> Parse(IEnumerable<string> infixCalculationSegments)
     {
-        var numberBuffer = new StringBuilder();
-        var numberBufferStart = -1;
         var infixCalculation = preprocessor.Process(infixCalculationSegments);
 
         if (!ParenthesesBalanced(infixCalculation))
             throw new CalculatorException(position: 1, $"Unbalanced parentheses.  Check calculation and try again.");
+
+        return GetTokens(infixCalculation);
+
+        static bool ParenthesesBalanced(string infixCalculation) =>
+            infixCalculation.Count(c => c == CalculatorConstants.LeftParentheses)
+                == infixCalculation.Count(c => c == CalculatorConstants.RightParentheses);
+    }
+
+    private IEnumerable<CalculationToken> GetTokens(string infixCalculation)
+    {
+        var numberBuffer = new StringBuilder();
+        var numberBufferStart = -1;
 
         VerboseConsole.WriteLine($"canonical infix notation: {infixCalculation}");
 
@@ -54,9 +66,5 @@ public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBui
             CalculatorConstants.Parentheses.Contains(character)
             || CalculatorConstants.Operators.Contains(character)
             || character is CalculatorConstants.Space;
-
-        static bool ParenthesesBalanced(string infixCalculation) =>
-            infixCalculation.Count(c => c == CalculatorConstants.LeftParentheses)
-                == infixCalculation.Count(c => c == CalculatorConstants.RightParentheses);
     }
 }

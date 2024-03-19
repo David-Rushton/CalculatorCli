@@ -3,8 +3,6 @@ namespace CalculatorCli.Engine;
 public class CalculatorConstants
 {
     public const char Space = ' ';
-    // TODO: Add support for decimal comma.
-    // TODO: Based on local settings we should support the decimal point or decimal comma.
     public const char DecimalPoint = '.';
     public const char LeftParentheses = '(';
     public const char RightParentheses = ')';
