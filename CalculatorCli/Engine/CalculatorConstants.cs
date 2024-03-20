@@ -8,7 +8,7 @@ public class CalculatorConstants
     public const char RightParentheses = ')';
     public const char PowerOfOperator = '^';
     public const char AddOperator = '+';
-    public const char SubstractOperator = '-';
+    public const char SubtractOperator = '-';
     public const char MultiplyOperator = '*';
     public const char DivideOperator = '/';
     public static readonly char[] Parentheses = [
@@ -17,12 +17,12 @@ public class CalculatorConstants
     public static readonly char[] Operators = [
         PowerOfOperator,
         AddOperator,
-        SubstractOperator,
+        SubtractOperator,
         MultiplyOperator,
         DivideOperator];
     public static readonly char[] ValidCharacters = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        PowerOfOperator, AddOperator, SubstractOperator, MultiplyOperator, DivideOperator,
+        PowerOfOperator, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator,
         LeftParentheses, RightParentheses,
         Space, DecimalPoint
     ];

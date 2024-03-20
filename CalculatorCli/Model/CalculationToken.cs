@@ -63,7 +63,7 @@ public readonly record struct CalculationToken(
             CalculatorConstants.MultiplyOperator => 3,
              CalculatorConstants.DivideOperator => 3,
             CalculatorConstants.AddOperator => 2,
-            CalculatorConstants.SubstractOperator => 2,
+            CalculatorConstants.SubtractOperator => 2,
             _ => 1
         };
 

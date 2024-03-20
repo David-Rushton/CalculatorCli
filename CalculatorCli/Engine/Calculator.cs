@@ -8,9 +8,9 @@ public class Calculator(Parser parser)
     /// Calculates the product from a sequence of reverse Polish notation tokens.
     /// </summary>
     /// <exception cref="CalculatorException"/>
-    public double Calculate(IEnumerable<string> infixCalculationSegments)
+    public double Calculate(string infixStatement)
     {
-        var infixTokens = parser.Parse(infixCalculationSegments);
+        var infixTokens = parser.Parse(infixStatement);
         var rpnTokens = infixTokens.ToReversePolishNotation();
         var rpnNotation = string.Join(CalculatorConstants.Space, rpnTokens.Select(t => t.Value));
         var stack = new Stack<CalculationToken>(rpnTokens);

@@ -4,9 +4,9 @@ public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.
 {
     public class Settings : CommandSettings
     {
-        [CommandArgument(position: 0, "<calculation>")]
+        [CommandArgument(position: 0, "<infixStatement>")]
         [Description("Expressed in [link=https://en.wikipedia.org/wiki/Infix_notation]infix notation[/]")]
-        public required string[] Calculation { get; init; }
+        public required string InfixStatement { get; init; }
 
         [CommandOption("--verbose")]
         [Description("Shows our working")]
@@ -17,7 +17,7 @@ public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.
     {
         try
         {
-            var result = calculator.Calculate(settings.Calculation);
+            var result = calculator.Calculate(settings.InfixStatement);
             AnsiConsole.Write(new Markup($"[blue]{result}[/]"));
             return 0;
         }

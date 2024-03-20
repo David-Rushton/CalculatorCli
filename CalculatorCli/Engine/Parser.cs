@@ -4,11 +4,13 @@ using System.Transactions;
 
 namespace CalculatorCli.Engine;
 
-public class Parser(Preprocessor preprocessor, CalculationBuilder calculationBuilder)
+public class Parser(SimpleInfixValidator validator, Preprocessor preprocessor, CalculationBuilder calculationBuilder)
 {
-    public IEnumerable<CalculationToken> Parse(IEnumerable<string> infixCalculationSegments)
+    public IEnumerable<CalculationToken> Parse(string infixStatement)
     {
-        var infixCalculation = preprocessor.Process(infixCalculationSegments);
+
+
+        var infixCalculation = preprocessor.Process(infixStatement);
 
         if (!ParenthesesBalanced(infixCalculation))
             throw new CalculatorException(position: 1, $"Unbalanced parentheses.  Check calculation and try again.");

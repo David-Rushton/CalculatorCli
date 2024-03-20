@@ -2,9 +2,8 @@ namespace CalculatorCli.Engine;
 
 public class Preprocessor
 {
-    public string Process(IEnumerable<string> infixCalculationSegments) =>
-        string.Join(CalculatorConstants.Space.ToString(), infixCalculationSegments)
-            // .Replace(CalculatorConstants.Space.ToString(), string.Empty)
+    public string Process(string infixCalculationSegments) =>
+        infixCalculationSegments
             .Replace("\n", string.Empty)
             .Replace("\t", string.Empty)
             .Replace("x", CalculatorConstants.MultiplyOperator.ToString())
@@ -12,8 +11,6 @@ public class Preprocessor
             .Replace("÷", CalculatorConstants.DivideOperator.ToString())
             .Replace("%", CalculatorConstants.DivideOperator.ToString())
             .Replace("+", CalculatorConstants.AddOperator.ToString())
-            .Replace("−", CalculatorConstants.SubstractOperator.ToString())
-            // .Replace("+-", CalculatorConstants.SubstractOperator.ToString())
-            // .Replace("-+", CalculatorConstants.SubstractOperator.ToString())
+            .Replace("−", CalculatorConstants.SubtractOperator.ToString())
             + CalculatorConstants.Space;
 }

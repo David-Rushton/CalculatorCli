@@ -1,5 +1,6 @@
 ﻿var services = new ServiceCollection();
 services
+    .AddSingleton<SimpleInfixValidator>()
     .AddSingleton<Preprocessor>()
     .AddSingleton<Parser>()
     .AddSingleton<CalculationBuilder>()
