@@ -39,7 +39,7 @@ public class SimpleInfixValidator
             ? $"There are problems with the statement:\n{reasonBuilder.ToString()}"
             : string.Empty;
 
-        return reasonBuilder.Length > 0;
+        return reasonBuilder.Length == 0;
     }
 
     private string GetInvalidCharacters(string infixStatement)
