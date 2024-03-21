@@ -48,7 +48,7 @@ public static class TokenExtensions
         while (operators.TryPop(out var token))
         {
             if (token.IsParenthesis)
-                throw new CalculatorException(token.Position, "Mismatching patenthese found.  Check calculation and try again.");
+                throw new CalculatorException(token.Position, "Mismatching !parenthesis found.  Check calculation and try again.");
 
             output.Enqueue(token);
         }

@@ -7,7 +7,7 @@ public class CalculatorTests
     [SetUp]
     public void Setup()
     {
-        _calculator = new Calculator(new Parser(new Preprocessor(), new CalculationBuilder()));
+        _calculator = new Calculator(new Parser(new SimpleInfixValidator(), new Preprocessor(), new CalculationBuilder()));
     }
 
     [Test]
@@ -28,9 +28,9 @@ public class CalculatorTests
     [TestCase("5 - 1", 4)]
     [TestCase("3 + 4 * 2 / (1 - 5)", 1)]
     [TestCase("3 + 4 * 2 / (1 - 5) ^ 2 ^ 3", 3.0001220703125)]
-    public void Calculate_WhenWellFormed_ReturnsExpectedResult(string calculation, double expected)
+    public void Calculate_WhenWellFormed_ReturnsExpectedResult(string infixStatement, double expected)
     {
-        var actual = _calculator.Calculate([calculation]);
+        var actual = _calculator.Calculate(infixStatement);
         Assert.That(actual, Is.EqualTo(expected));
     }
 
@@ -40,8 +40,8 @@ public class CalculatorTests
     [TestCase("1 + (2 +")]
     [TestCase("(()) 1 + 1")]
     [TestCase("1 + )")]
-    public void Calculate_WhenMalformed_ThrowsCalculatorException(string calculation)
+    public void Calculate_WhenMalformed_ThrowsCalculatorException(string infixStatement)
     {
-        Assert.Throws<CalculatorException>(() => _calculator.Calculate([calculation]));
+        Assert.Throws<CalculatorException>(() => _calculator.Calculate(infixStatement));
     }
 }

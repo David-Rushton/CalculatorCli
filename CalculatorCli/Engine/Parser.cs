@@ -25,7 +25,7 @@ public class Parser(SimpleInfixValidator validator, Preprocessor preprocessor, C
 
         // num  > op lp rp
         // op   > num lp
-        // lp   > lp num op
+        // lp   > lp num
         // rp   > op rp
 
 
