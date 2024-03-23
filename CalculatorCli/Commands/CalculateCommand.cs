@@ -1,12 +1,8 @@
-using CalculatorCli.Engine.Abstractions;
-using CalculatorCli.Engine.DTOs;
-using CalculatorCli.Formatters;
-
 namespace CalculatorCli.Commands;
 
 public class CalculateCommand(
     Calculator calculator,
-    ExceptionFormatter exceptionFormatter) : Command<CalculateCommand.Settings>
+    CalculationExceptionFormatter exceptionFormatter) : Command<CalculateCommand.Settings>
 {
     public class Settings : CommandSettings
     {

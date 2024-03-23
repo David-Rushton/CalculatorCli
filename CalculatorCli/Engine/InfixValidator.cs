@@ -50,21 +50,9 @@ public class InfixValidator
     public bool HasValidInfixTokenSequence(
         IEnumerable<CalculationToken> tokens, out IEnumerable<InfixTokenIssue> infixTokenIssues)
     {
-        // rules:
-        //  - if one token, must be a number
-        //  - else:
-            //  - must start lp or operand
-            //  - num -> op lp rp
-            //  - op -> lp num
-            //  - lp -> lp num
-            //  - rp -> rp op
-
         Debug.Assert(tokens.Any());
 
-
         var invalidTokens = new List<(CalculationToken token, string message)>();
-
-
 
         // TODO: Is this valid?  Would it blow up elsewhere.  Add test case and consider.
         var first = tokens.First();
@@ -73,8 +61,6 @@ public class InfixValidator
 
         if (tokens.Count() > 1 && first.Type is not TokenType.Number or TokenType.LeftParenthesis)
             invalidTokens.Add((tokens.First(), "Expected number or opening parenthesis."));
-
-
 
         var expectedTypes = new Dictionary<TokenType, HashSet<TokenType>>
         {
@@ -85,7 +71,6 @@ public class InfixValidator
         };
 
         var parenthesisLevel = 0;
-
 
         var last = first;
         foreach (var current in tokens.Skip(1))

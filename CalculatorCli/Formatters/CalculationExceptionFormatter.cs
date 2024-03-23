@@ -1,10 +1,9 @@
-using System.Text;
-
-using CalculatorCli.Engine.Abstractions;
-
 namespace CalculatorCli.Formatters;
 
-public class ExceptionFormatter
+/// <summary>
+/// Pretty prints custom exceptions.
+/// </summary>
+public class CalculationExceptionFormatter
 {
     private const string RedCurlyUnderline = "\x1b[58:2::172:0:0m\x1b[4:3m";
     private const string AnsiReset = "\x1b[0m";
@@ -14,6 +13,7 @@ public class ExceptionFormatter
         var buffer = new StringBuilder();
         var isUnderlineActive = false;
         var i = 0;
+
         while (i < e.InfixExpression.Length)
         {
             if (e.InvalidCharacterPositions.Contains(i))
@@ -46,6 +46,6 @@ public class ExceptionFormatter
 
     public void PrettyPrint(InvalidInfixTokensException e)
     {
-
+        throw new NotImplementedException();
     }
 }

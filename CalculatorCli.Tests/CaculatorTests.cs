@@ -42,6 +42,6 @@ public class CalculatorTests
     [TestCase("1 + )")]
     public void Calculate_WhenMalformed_ThrowsCalculatorException(string infixStatement)
     {
-        Assert.Throws<CalculatorException>(() => _calculator.Calculate(infixStatement));
+        Assert.Throws<InvalidInfixExpressionException>(() => _calculator.Calculate(infixStatement));
     }
 }
