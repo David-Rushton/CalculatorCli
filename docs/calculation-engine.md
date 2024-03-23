@@ -21,7 +21,8 @@ simplify last steps by:
 - Replaces tabs and new lines with a spaces 
 - Replace multiple spaces with a single space
 - Replace common operator variants, like `x` & `×`, with the officially supported variant (e.g. `*`) 
-- Appending a trailing space to the expression
+- Endures the expression end with a space
+  (Acts as an end of stream token to simplify the main parser loop)
 
 As a consequence:
 
@@ -31,16 +32,14 @@ As a consequence:
 The preprocessor assumes most expressions can be clearly printed on a single line.  Which feels 
 reasonable for a CLI based calculator.  
 
-### Validator
+### Infix Validator
 
-Scans the expression for common mistakes, including:
+Scans the expression for common mistakes:
 
-- Uneven parentheses count
+- Missing expression 
 - Invalid characters within the expression
-- Consecutive operators
-- Consecutive operands
 
-The validation cannot account for all inaccuracies.  Testing parentheses are properly balanced, for 
+The validation does not account for all inaccuracies.  Testing parentheses are properly balanced, for 
 example, requires parsing.
 
 Like the preprocessor; the validator is design to be fast and simplify later steps.

@@ -1,21 +1,23 @@
 using System.Runtime.CompilerServices;
 
+using NUnit.Framework.Internal.Commands;
+
 namespace CalculatorCli.Tests;
 
 public class SimpleInfixValidatorTests
 {
-    private SimpleInfixValidator _validator;
+    private InfixValidator _validator;
 
     [SetUp]
     public void Setup() =>
         _validator = new();
 
-    [Test]
+    [Test()]
     public void Validate_Fails_WhenStatementContainsInvalidCharacters()
     {
         var infixStatement = "abc";
 
-        var result = _validator.Validate(infixStatement, out var message);
+        var result = _validator.IsExpressionValid(infixStatement, out var message);
         var expectedMessage = @"There are problems with the statement:
 - Statement contains invalid characters: a, b and c
 ";
@@ -23,7 +25,7 @@ public class SimpleInfixValidatorTests
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.False);
-            Assert.That(message, Is.EqualTo(expectedMessage));
+            Assert.That(message.Message, Is.EqualTo(expectedMessage));
         });
     }
 }

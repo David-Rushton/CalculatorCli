@@ -9,7 +9,7 @@ public class ParserTests
     [SetUp]
     public void Setup()
     {
-        _parser = new Parser(new SimpleInfixValidator(), new Preprocessor(), new CalculationBuilder());
+        _parser = new Parser(new Engine.InfixValidator(), new Preprocessor(), new CalculationBuilder());
     }
 
     [Test]

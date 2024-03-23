@@ -7,7 +7,7 @@ public class CalculatorTests
     [SetUp]
     public void Setup()
     {
-        _calculator = new Calculator(new Parser(new SimpleInfixValidator(), new Preprocessor(), new CalculationBuilder()));
+        _calculator = new Calculator(new Parser(new InfixValidator(), new Preprocessor(), new CalculationBuilder()));
     }
 
     [Test]

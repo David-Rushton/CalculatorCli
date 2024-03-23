@@ -1,6 +1,12 @@
+using CalculatorCli.Engine.Abstractions;
+using CalculatorCli.Engine.DTOs;
+using CalculatorCli.Formatters;
+
 namespace CalculatorCli.Commands;
 
-public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.Settings>
+public class CalculateCommand(
+    Calculator calculator,
+    ExceptionFormatter exceptionFormatter) : Command<CalculateCommand.Settings>
 {
     public class Settings : CommandSettings
     {
@@ -21,14 +27,16 @@ public class CalculateCommand(Calculator calculator) : Command<CalculateCommand.
             AnsiConsole.Write(new Markup($"[blue]{result}[/]"));
             return 0;
         }
-        catch (CalculatorException e)
+        catch (Exception e)
         {
+            if (e is InvalidInfixExpressionException infix)
+            {
+                exceptionFormatter.PrettyPrint(infix);
+                return 1;
+            }
+
             AnsiConsole.WriteException(e);
             return 1;
-        }
-        catch (Exception)
-        {
-            throw;
         }
     }
 }

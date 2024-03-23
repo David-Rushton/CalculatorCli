@@ -1,60 +1,35 @@
-using System.Security.Cryptography.X509Certificates;
+using CalculatorCli.Engine.Abstractions;
 using System.Text;
-using System.Transactions;
 
 namespace CalculatorCli.Engine;
 
-public class Parser(SimpleInfixValidator validator, Preprocessor preprocessor, CalculationBuilder calculationBuilder)
+public class Parser(InfixValidator validator, Preprocessor preprocessor, CalculationBuilder calculationBuilder)
 {
     public IEnumerable<CalculationToken> Parse(string infixStatement)
     {
+        var infixExpression = preprocessor.Process(infixStatement);
 
+        if (!validator.IsExpressionValid(infixExpression, out var issue))
+            throw new InvalidInfixExpressionException(issue.Message, infixExpression.Trim(), issue.Positions);
 
-        var infixCalculation = preprocessor.Process(infixStatement);
+        var tokens = GetTokens(infixExpression).ToList();
 
-        if (!ParenthesesBalanced(infixCalculation))
-            throw new CalculatorException(position: 1, $"Unbalanced parentheses.  Check calculation and try again.");
+        if (!validator.HasValidInfixTokenSequence(tokens, out var issues))
+            throw new InvalidInfixTokensException(tokens, issues);
 
-
-        // @"^\s*=?[\+\-\*\/^\d\.\s()]+$"
-        // valid notation characters
-
-        // 1 + 2 + ( 2 * ( 6 * 8 ) )
-        // 1 + ((2 * 3) + (5 +  3))
-        // 1 + ( 2 * 3 ) / 4
-
-        // num  > op lp rp
-        // op   > num lp
-        // lp   > lp num
-        // rp   > op rp
-
-
-        // convert to postfix
-        // read
-        // loop
-        //  operand push
-        //  number pop two
-        //  insert two with op inside parentheses
-        //  push back to stack
-
-
-        return GetTokens(infixCalculation);
-
-        static bool ParenthesesBalanced(string infixCalculation) =>
-            infixCalculation.Count(c => c == CalculatorConstants.LeftParentheses)
-                == infixCalculation.Count(c => c == CalculatorConstants.RightParentheses);
+        return tokens;
     }
 
-    private IEnumerable<CalculationToken> GetTokens(string infixCalculation)
+    private IEnumerable<CalculationToken> GetTokens(string infixExpression)
     {
         var numberBuffer = new StringBuilder();
         var numberBufferStart = -1;
 
-        VerboseConsole.WriteLine($"canonical infix notation: {infixCalculation}");
+        VerboseConsole.WriteLine($"canonical infix notation: {infixExpression}");
 
-        foreach (var i in Enumerable.Range(0, infixCalculation.Length))
+        foreach (var i in Enumerable.Range(0, infixExpression.Length))
         {
-            var character = infixCalculation[i];
+            var character = infixExpression[i];
             var position = i + 1;
 
             if (!CalculatorConstants.ValidCharacters.Contains(character))
