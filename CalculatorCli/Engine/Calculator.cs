@@ -24,9 +24,6 @@ public class Calculator(Parser parser)
         {
             if (!token.IsOperator)
             {
-
-                VerboseConsole.WriteLine(string.Join(", ", stack.Select(i => i.Value)));
-
                 stack.Push(token);
                 continue;
             }
