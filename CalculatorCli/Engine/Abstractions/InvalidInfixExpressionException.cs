@@ -1,15 +1,18 @@
-using CalculatorCli.Engine.DTOs;
-
 namespace CalculatorCli.Engine.Abstractions;
 
 /// <summary>
-/// Thrown when an invalid infix expression is encountered.
+///   Thrown when the sequence of infix tokens cannot be parsed.
+/// <example>
+///   This normally occurs when there is a invalid sequence.
+///   <code>
+///     "1 + not-a-number"
+///   </code>
+/// </example>
 /// </summary>
 public class InvalidInfixExpressionException(
-    string message,
-    string infixExpression,
-    IEnumerable<int> invalidCharacterPositions) : Exception(message), ICalculatorException
+    IEnumerable<CalculationToken> tokens,
+    Dictionary<CalculationToken, string> invalidTokens): Exception(message: "Is the expression valid?")
 {
-    public string InfixExpression = infixExpression;
-    public HashSet<int> InvalidCharacterPositions = new(invalidCharacterPositions);
+    public readonly IEnumerable<CalculationToken> Tokens = tokens;
+    public readonly Dictionary<CalculationToken, string> InvalidTokens = invalidTokens;
 }

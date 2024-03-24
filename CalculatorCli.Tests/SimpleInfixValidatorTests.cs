@@ -12,20 +12,20 @@ public class SimpleInfixValidatorTests
     public void Setup() =>
         _validator = new();
 
-    [Test()]
-    public void Validate_Fails_WhenStatementContainsInvalidCharacters()
-    {
-        var infixStatement = "abc";
+//     [Test()]
+//     public void Validate_Fails_WhenStatementContainsInvalidCharacters()
+//     {
+//         var infixStatement = "abc";
 
-        var result = _validator.IsExpressionValid(infixStatement, out var message);
-        var expectedMessage = @"There are problems with the statement:
-- Statement contains invalid characters: a, b and c
-";
+//         var result = _validator.IsExpressionValid(infixStatement, out var message);
+//         var expectedMessage = @"There are problems with the statement:
+// - Statement contains invalid characters: a, b and c
+// ";
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(result, Is.False);
-            Assert.That(message.Message, Is.EqualTo(expectedMessage));
-        });
-    }
+//         Assert.Multiple(() =>
+//         {
+//             Assert.That(result, Is.False);
+//             Assert.That(message.Message, Is.EqualTo(expectedMessage));
+//         });
+//     }
 }

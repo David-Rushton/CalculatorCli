@@ -6,9 +6,9 @@ public class CalculateCommand(
 {
     public class Settings : CommandSettings
     {
-        [CommandArgument(position: 0, "<infixStatement>")]
+        [CommandArgument(position: 0, "<infixExpression>")]
         [Description("Expressed in [link=https://en.wikipedia.org/wiki/Infix_notation]infix notation[/]")]
-        public required string InfixStatement { get; init; }
+        public required string InfixExpression { get; init; }
 
         [CommandOption("--verbose")]
         [Description("Shows our working")]
@@ -19,19 +19,13 @@ public class CalculateCommand(
     {
         try
         {
-            var result = calculator.Calculate(settings.InfixStatement);
+            var result = calculator.Calculate(settings.InfixExpression);
             AnsiConsole.Write(new Markup($"[blue]{result}[/]"));
             return 0;
         }
         catch (Exception e)
         {
-            if (e is InvalidInfixExpressionException infix)
-            {
-                exceptionFormatter.PrettyPrint(infix);
-                return 1;
-            }
-
-            AnsiConsole.WriteException(e);
+            exceptionFormatter.PrettyPrint(e, settings.IsVerbose);
             return 1;
         }
     }

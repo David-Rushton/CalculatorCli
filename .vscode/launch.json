@@ -11,7 +11,7 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/CalculatorCli/bin/Debug/net8.0/CalculatorCli.dll",
             "args": [
-                "1 + banana"
+                "1 + -1"
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

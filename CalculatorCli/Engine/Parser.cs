@@ -1,21 +1,30 @@
-using CalculatorCli.Engine.Abstractions;
-using System.Text;
-
 namespace CalculatorCli.Engine;
 
 public class Parser(InfixValidator validator, Preprocessor preprocessor, CalculationBuilder calculationBuilder)
 {
+    /// <summary>
+    /// Converts an infix expression into a series of tokens.
+    /// </summary>
+    /// <param name="validator"></param>
+    /// <param name="preprocessor"></param>
+    /// <param name="calculationBuilder"></param>
+    /// <exception cref="InvalidInfixCharactersException"/>
+    /// <exception cref="InvalidInfixExpressionException"/>
+    /// <exception cref="MissingInfixExpressionException"/>
     public IEnumerable<CalculationToken> Parse(string infixStatement)
     {
         var infixExpression = preprocessor.Process(infixStatement);
 
-        if (!validator.IsExpressionValid(infixExpression, out var issue))
-            throw new InvalidInfixExpressionException(issue.Message, infixExpression.Trim(), issue.Positions);
+        if (infixExpression.Trim().Length == 0)
+            throw new MissingInfixExpressionException();
+
+        if (!validator.ContainsInvalidCharacters(infixExpression, out var invalidPositions))
+            throw new InvalidInfixCharactersException(infixExpression, invalidPositions);
 
         var tokens = GetTokens(infixExpression).ToList();
 
-        if (!validator.HasValidInfixTokenSequence(tokens, out var issues))
-            throw new InvalidInfixTokensException(tokens, issues);
+        if (!validator.ContainsInvalidTokenSequence(tokens, out var invalidTokens))
+            throw new InvalidInfixExpressionException(tokens, invalidTokens);
 
         return tokens;
     }

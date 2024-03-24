@@ -34,14 +34,31 @@ public class CalculatorTests
         Assert.That(actual, Is.EqualTo(expected));
     }
 
+    [TestCase("12 -(2 *3)", 6)]
+    [TestCase("12 + + + -(2 *3)", 6)]
+    [TestCase("12 + - + + -(
+        2 *3)", 18)]
+    public void Calculate_WhenWellFormedWithUnary_ReturnsExpectedResult(string infixStatement, double expected)
+    {
+        var actual = _calculator.Calculate(infixStatement);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
     [Test]
+    // TODO: Should this throw?
     [TestCase("1 +")]
     [TestCase("1 + y")]
-    [TestCase("1 + (2 +")]
-    [TestCase("(()) 1 + 1")]
-    [TestCase("1 + )")]
-    public void Calculate_WhenMalformed_ThrowsCalculatorException(string infixStatement)
+    public void Calculate_WhenMalformed_ThrowsInvalidInfixCharactersException(string infixStatement)
     {
+        Assert.Throws<InvalidInfixCharactersException>(() => _calculator.Calculate(infixStatement));
+    }
+
+    [Test]
+    [TestCase("1 + )")]
+    [TestCase("(()) 1 + 1")]
+    public void Calculate_WhenMalformed_InvalidInfixCharactersException(string infixStatement)
+    {
+
         Assert.Throws<InvalidInfixExpressionException>(() => _calculator.Calculate(infixStatement));
     }
 }

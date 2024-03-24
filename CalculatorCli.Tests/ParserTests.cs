@@ -29,6 +29,6 @@ public class ParserTests
     [Test]
     public void Parse_WhenContainsInvalidCharacters_ThrowsCalculatorException()
     {
-        Assert.Throws<CalculatorException>(() => _parser.Parse("this is not a sum"));
+        Assert.Throws<InvalidInfixCharactersException>(() => _parser.Parse("this is not a sum"));
     }
 }

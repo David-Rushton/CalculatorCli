@@ -20,89 +20,99 @@ public class InfixValidator
     ///   by this class.
     ///   </remarks>
     /// </summary>
-    public bool IsExpressionValid(string infixStatement, out InfixExpressionIssue failure)
+    public bool ContainsInvalidCharacters(string infixStatement, out List<int> invalidPositions)
     {
-        var reason = string.Empty;
+        invalidPositions = [];
 
-        var invalidCharacters = new List<int>();
         var i = 0;
         while (i < infixStatement.Length)
         {
             if (!CalculatorConstants.ValidCharacters.Contains(infixStatement[i]))
-                invalidCharacters.Add(i);
+                invalidPositions.Add(i);
 
             i++;
         }
 
-        if (i == 0)
-            reason = "Please provide an infix expression.  See --help for instructions.";
-
-        if (invalidCharacters.Count == 1)
-            reason = "Unexpected character in expression.";
-        if (invalidCharacters.Count > 1)
-            reason = "Unexpected characters in expression.";
-
-        failure = new (reason, invalidCharacters);
-
-        return reason == string.Empty;
+        return !invalidPositions.Any();
     }
 
-    public bool HasValidInfixTokenSequence(
-        IEnumerable<CalculationToken> tokens, out IEnumerable<InfixTokenIssue> infixTokenIssues)
+    public bool ContainsInvalidTokenSequence(
+        IEnumerable<CalculationToken> tokens, out Dictionary<CalculationToken, string> invalidTokens)
     {
-        Debug.Assert(tokens.Any());
-
-        var invalidTokens = new List<(CalculationToken token, string message)>();
-
-        // TODO: Is this valid?  Would it blow up elsewhere.  Add test case and consider.
-        var first = tokens.First();
-        if (tokens.Count() == 1 && first.Type is not TokenType.Number)
-            invalidTokens.Add((tokens.First(), "Expected number."));
-
-        if (tokens.Count() > 1 && first.Type is not TokenType.Number or TokenType.LeftParenthesis)
-            invalidTokens.Add((tokens.First(), "Expected number or opening parenthesis."));
-
-        var expectedTypes = new Dictionary<TokenType, HashSet<TokenType>>
-        {
-            { TokenType.Number, [TokenType.Operator, TokenType.LeftParenthesis, TokenType.RightParenthesis] },
-            { TokenType.Operator, [TokenType.Number, TokenType.LeftParenthesis] },
-            { TokenType.LeftParenthesis, [TokenType.Number, TokenType.LeftParenthesis] },
-            { TokenType.RightParenthesis, [TokenType.Operator, TokenType.RightParenthesis] },
-        };
-
+        var issues = new List<(CalculationToken token, string description)>();
         var parenthesisLevel = 0;
 
-        var last = first;
-        foreach (var current in tokens.Skip(1))
-        {
-            if (!expectedTypes[last.Type].Contains(current.Type))
-                invalidTokens.Add((current, $"Expected {GetExpected(expectedTypes[last.Type])}."));
+        TestFirstTokenValid();
+        TestRemainingTokensValid();
 
-            if (current.IsLeftParenthesis)
-                parenthesisLevel++;
-
-            if (current.IsRightParenthesis)
-            {
-                parenthesisLevel--;
-                if (parenthesisLevel < 0)
-                    invalidTokens.Add((current, "Missing opening parenthesis."));
-
-            }
-
-            last = current;
-        }
-
-
-        if (parenthesisLevel > 0)
-            invalidTokens.Add((last, "Missing closing parenthesis."));
-
-
-        infixTokenIssues = invalidTokens.Select(it => new InfixTokenIssue(it.message, it.token));
+        invalidTokens = issues.ToDictionary(k => k.token, v => v.description);
 
         return !invalidTokens.Any();
 
+        void TestFirstTokenValid()
+        {
+            var first = tokens.First();
 
-        static string GetExpected(HashSet<TokenType> tokenTypes) =>
-            tokenTypes.Humanize(tt => tt.Humanize(LetterCasing.LowerCase), "or");
+            // Is expression of "<number>" valid?  Would conversion or calculation blow up?
+            // TODO: Add test case and/or consider.
+            if (tokens.Count() == 1)
+            {
+                if (first.Type is not TokenType.Number)
+                    issues.Add((first, "Expected number."));
+            }
+            else
+            {
+                if (first.Type is not (TokenType.Number or TokenType.LeftParenthesis))
+                    issues.Add((first, "Expected number or opens parenthesis."));
+
+                if (first.Type is TokenType.LeftParenthesis)
+                    parenthesisLevel++;
+            }
+        }
+
+        void TestRemainingTokensValid()
+        {
+            var expected = new Dictionary<TokenType, HashSet<TokenType>>
+            {
+                { TokenType.Number, [TokenType.Operator, TokenType.LeftParenthesis, TokenType.RightParenthesis] },
+                { TokenType.Operator, [TokenType.Number, TokenType.LeftParenthesis] },
+                { TokenType.LeftParenthesis, [TokenType.Number, TokenType.LeftParenthesis] },
+                { TokenType.RightParenthesis, [TokenType.Operator, TokenType.RightParenthesis] },
+            };
+
+            var last = tokens.First();
+            foreach (var current in tokens.Skip(1))
+            {
+                // Unary operations allow for consecutive +/- operators.
+                // These are treated as a special case here.
+                if (!expected[last.Type].Contains(current.Type))
+                    if (!MaybeUnaryOperation(current, last))
+                        issues.Add((current, $"Expected {GetExpected(expected[last.Type])}."));
+
+                if (current.IsLeftParenthesis)
+                    parenthesisLevel++;
+
+                if (current.IsRightParenthesis)
+                {
+                    parenthesisLevel--;
+                    if (parenthesisLevel < 0)
+                        issues.Add((current, "Missing opening parenthesis."));
+                }
+
+                last = current;
+            }
+
+            if (parenthesisLevel > 0)
+                issues.Add((last, "Missing closing parenthesis."));
+
+            bool MaybeUnaryOperation(CalculationToken currnet, CalculationToken last) =>
+                last.IsOperator
+                && last.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator
+                && currnet.IsOperator
+                && currnet.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator;
+
+            static string GetExpected(HashSet<TokenType> tokenTypes) =>
+                tokenTypes.Humanize(tt => tt.Humanize(LetterCasing.LowerCase), "or");
+        }
     }
 }
