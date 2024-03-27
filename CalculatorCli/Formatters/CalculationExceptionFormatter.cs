@@ -18,8 +18,8 @@ public class CalculationExceptionFormatter
     {
         switch (e)
         {
-            case InvalidInfixCharactersException invalidCharacetersException:
-                PrettyPrint(invalidCharacetersException);
+            case InvalidInfixCharactersException invalidCharactersException:
+                PrettyPrint(invalidCharactersException);
                 break;
             case InvalidInfixExpressionException expressionException:
                 PrettyPrint(expressionException);
@@ -84,16 +84,21 @@ public class CalculationExceptionFormatter
         };
         var issueColour = new Dictionary<string, string>();
 
-        var distinctIssues = e.InvalidTokens.Select(it => it.Value).Distinct();
+        var distinctIssues = e.InvalidTokens.Select(it => it.Key).Distinct();
         foreach (var issue in distinctIssues)
             issueColour[issue] = colours[issueColour.Count % 5];
+
+        var invalidTokens = e.InvalidTokens.Values.Select(v => v);
 
         var buffer = new StringBuilder();
 
         foreach (var token in e.Tokens)
         {
-            if (e.InvalidTokens.TryGetValue(token, out var issue))
+            if (invalidTokens.Contains(token))
             {
+                // TODO: Refactor this mess.
+                // May require a 2 pass solution, where we wrap tokens.
+                var issue = " ?????? ";
                 var underlineRgb = CurlyUnderline.Replace("<RGB>", issueColour[issue]);
                 buffer.Append($"{underlineRgb}{token.Value}{AnsiReset}");
             }

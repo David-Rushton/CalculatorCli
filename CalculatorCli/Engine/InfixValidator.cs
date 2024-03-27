@@ -37,7 +37,7 @@ public class InfixValidator
     }
 
     public bool ContainsInvalidTokenSequence(
-        IEnumerable<CalculationToken> tokens, out Dictionary<CalculationToken, string> invalidTokens)
+        IEnumerable<CalculationToken> tokens, out Dictionary<string, CalculationToken> invalidTokens)
     {
         var issues = new List<(CalculationToken token, string description)>();
         var parenthesisLevel = 0;
@@ -45,7 +45,7 @@ public class InfixValidator
         TestFirstTokenValid();
         TestRemainingTokensValid();
 
-        invalidTokens = issues.ToDictionary(k => k.token, v => v.description);
+        invalidTokens = issues.ToDictionary(k => k.description, v => v.token);
 
         return !invalidTokens.Any();
 
