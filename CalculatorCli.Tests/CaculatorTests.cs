@@ -36,8 +36,7 @@ public class CalculatorTests
 
     [TestCase("12 -(2 *3)", 6)]
     [TestCase("12 + + + -(2 *3)", 6)]
-    [TestCase("12 + - + + -(
-        2 *3)", 18)]
+    [TestCase("12 + - + + -(2 *3)", 18)]
     public void Calculate_WhenWellFormedWithUnary_ReturnsExpectedResult(string infixStatement, double expected)
     {
         var actual = _calculator.Calculate(infixStatement);
@@ -58,6 +57,7 @@ public class CalculatorTests
     [TestCase("(()) 1 + 1")]
     public void Calculate_WhenMalformed_InvalidInfixCharactersException(string infixStatement)
     {
+
 
         Assert.Throws<InvalidInfixExpressionException>(() => _calculator.Calculate(infixStatement));
     }
