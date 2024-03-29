@@ -1,5 +1,8 @@
 namespace CalculatorCli.Engine;
 
+/// <summary>
+/// Characters supported by this calculator.
+/// </summary>
 public class CalculatorConstants
 {
     public const char Space = ' ';

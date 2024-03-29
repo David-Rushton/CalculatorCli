@@ -32,6 +32,7 @@ public enum TokenType
 ///     Supports infix and reverse Polish notation.
 ///   </remarks>
 /// </summary>
+//TODO: Is this the best name I can think of?
 public readonly record struct CalculationToken(
     int Position,
     TokenType Type,
