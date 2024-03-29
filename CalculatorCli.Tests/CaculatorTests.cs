@@ -23,6 +23,8 @@ public class CalculatorTests
     [TestCase("1 + 3 * 2", 7)]
     [TestCase("1 + (3 * 2)", 7)]
     [TestCase("(1 + 3) * 2", 8)]
+    [TestCase("(1 + 3) * 2 % 3", 2)]
+    [TestCase("(1 + 3) * (2 % 3)", 8)]
     [TestCase("2 ^ 5", 32)]
     [TestCase("1 - 5", -4)]
     [TestCase("5 - 1", 4)]
@@ -43,6 +45,18 @@ public class CalculatorTests
         Assert.That(actual, Is.EqualTo(expected));
     }
 
+    [TestCase("10 % 1", 0)]
+    [TestCase("12 % 2", 0)]
+    [TestCase("5 % 4", 1)]
+    [TestCase("5 % 4 % 1", 0)]
+    [TestCase("10 % 7 % 2", 1)]
+    [TestCase("10 % (7 % 2)", 0)]
+    public void Calculate_WhenWellFormedWithReminder_ReturnsExpectedResult(string infixStatement, double expected)
+    {
+        var actual = _calculator.Calculate(infixStatement);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
     [Test]
     [TestCase("1 + y")]
     public void Calculate_WhenMalformed_ThrowsInvalidInfixCharactersException(string infixStatement)
@@ -53,7 +67,7 @@ public class CalculatorTests
     [Test]
     [TestCase("1 + )")]
     [TestCase("(()) 1 + 1")]
-    public void Calculate_WhenMalformed_InvalidInfixCharactersException(string infixStatement)
+    public void Calculate_WhenMalformed_ThrowsInvalidInfixExpressionException(string infixStatement)
     {
         Assert.Throws<InvalidInfixExpressionException>(() => _calculator.Calculate(infixStatement));
     }
