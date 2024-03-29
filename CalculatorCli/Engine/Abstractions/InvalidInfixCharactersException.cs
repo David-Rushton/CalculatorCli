@@ -1,5 +1,3 @@
-using CalculatorCli.Engine.DTOs;
-
 namespace CalculatorCli.Engine.Abstractions;
 
 /// <summary>
