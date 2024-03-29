@@ -75,6 +75,7 @@ public class InfixValidator
             var expected = new Dictionary<TokenType, HashSet<TokenType>>
             {
                 { TokenType.Operand, [TokenType.BinaryOperator, TokenType.LeftParenthesis, TokenType.RightParenthesis] },
+                { TokenType.UnaryOperator, [TokenType.Operand, TokenType.LeftParenthesis] },
                 { TokenType.BinaryOperator, [TokenType.Operand, TokenType.LeftParenthesis] },
                 { TokenType.LeftParenthesis, [TokenType.Operand, TokenType.LeftParenthesis] },
                 { TokenType.RightParenthesis, [TokenType.BinaryOperator, TokenType.RightParenthesis] },
