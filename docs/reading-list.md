@@ -16,4 +16,3 @@ Want to learn more about software calculators?
 - https://en.wikipedia.org/wiki/Unary_operation
 - https://stackoverflow.com/a/5240912/2572928
 - https://stackoverflow.com/questions/5239715/problems-with-a-shunting-yard-algorithm/5240781#5240781
-- https://stackoverflow.com/questions/2431863/infix-to-postfix-and-unary-binary-operators

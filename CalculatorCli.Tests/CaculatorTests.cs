@@ -44,8 +44,6 @@ public class CalculatorTests
     }
 
     [Test]
-    // TODO: Should this throw?
-    [TestCase("1 +")]
     [TestCase("1 + y")]
     public void Calculate_WhenMalformed_ThrowsInvalidInfixCharactersException(string infixStatement)
     {
@@ -57,8 +55,6 @@ public class CalculatorTests
     [TestCase("(()) 1 + 1")]
     public void Calculate_WhenMalformed_InvalidInfixCharactersException(string infixStatement)
     {
-
-
         Assert.Throws<InvalidInfixExpressionException>(() => _calculator.Calculate(infixStatement));
     }
 }

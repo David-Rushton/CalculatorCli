@@ -17,7 +17,7 @@ public class InfixValidatorTests
     [TestCase("1 + 2 =", new[] {6})]
     [TestCase("1 + banana", new[] {4, 5, 6, 7, 8, 9})]
     [TestCase("not an infix expression", new[] {0, 1, 2, 4, 5, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22})]
-    public void ContainsInvalidCharacters_Fails_WhenExpressionContainsInvalidCharacters(
+    public void ContainsInvalidCharacters_WhenExpressionContainsInvalidCharacters_ReturnsFalse(
         string infixExpression, IEnumerable<int> expectedPositions)
     {
         var result = _validator.ContainsInvalidCharacters(infixExpression, out var actualPositions);
@@ -36,7 +36,7 @@ public class InfixValidatorTests
     [TestCase("()")]
     [TestCase(".")]
     [TestCase("(1.1 + 2 - 3 / 4 * 5) ^ 6")]
-    public void ContainsInvalidCharacters_Passes_WhenExpressionContainsOnlyValidCharacters(
+    public void ContainsInvalidCharacters_WhenExpressionContainsOnlyValidCharacters_ReturnsTrue(
         string infixExpression)
     {
         var result = _validator.ContainsInvalidCharacters(infixExpression, out var actualPositions);
@@ -58,21 +58,22 @@ public class InfixValidatorTests
         {
             Assert.That(result, Is.False);
             Assert.That(invalidTokens.Count(), Is.EqualTo(1));
-            Assert.That(invalidTokens.First().Value.IsLeftParenthesis, Is.True);
+            Assert.That(invalidTokens.First().token.IsLeftParenthesis, Is.True);
         });
     }
 
     [Test]
     public void ContainsInvalidTokenSequence_Fails_WhenParenthesesUnbalanced()
     {
+        // Unbalanced parentheses + missing closing parenthesis.
         var tokens = GetTokens("1 + ( ( 1 + )");
         var result  =_validator.ContainsInvalidTokenSequence(tokens, out var invalidTokens);
 
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.False);
-            Assert.That(invalidTokens.Count(), Is.EqualTo(1));
-            Assert.That(invalidTokens.First().Value.IsRightParenthesis, Is.True);
+            Assert.That(invalidTokens.Count(), Is.EqualTo(2));
+            Assert.That(invalidTokens.First().token.IsRightParenthesis, Is.True);
         });
     }
 

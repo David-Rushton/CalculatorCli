@@ -11,8 +11,8 @@ namespace CalculatorCli.Engine.Abstractions;
 /// </summary>
 public class InvalidInfixExpressionException(
     IEnumerable<CalculationToken> tokens,
-    Dictionary<string, CalculationToken> invalidTokens): Exception(message: "Is the expression valid?")
+    List<(CalculationToken token, string issue)> tokenIssues): Exception(message: "Is the expression valid?")
 {
     public readonly IEnumerable<CalculationToken> Tokens = tokens;
-    public readonly Dictionary<string, CalculationToken> InvalidTokens = invalidTokens;
+    public readonly List<(CalculationToken token, string issue)> TokenIssues = tokenIssues;
 }
