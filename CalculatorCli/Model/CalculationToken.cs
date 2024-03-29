@@ -8,10 +8,11 @@ public enum Associativity
 
 public enum TokenType
 {
-    Number,
+    Operand,
+    BinaryOperator,
+    UnaryOperator,
     LeftParenthesis,
-    RightParenthesis,
-    Operator
+    RightParenthesis
 }
 
 /// <summary>
@@ -40,7 +41,13 @@ public readonly record struct CalculationToken(
         double.TryParse(Value, out _);
 
     public bool IsOperator =>
-        Type is TokenType.Operator;
+        Type is TokenType.BinaryOperator or TokenType.UnaryOperator;
+
+    public bool IsBinaryOperator =>
+        Type is TokenType.BinaryOperator;
+
+    public bool IsUnaryOperator =>
+        Type is TokenType.UnaryOperator;
 
     public bool IsParenthesis =>
         Type is TokenType.LeftParenthesis or TokenType.LeftParenthesis;
@@ -57,19 +64,22 @@ public readonly record struct CalculationToken(
     // https://en.wikipedia.org/wiki/Order_of_operations
     // https://en.wikipedia.org/wiki/Shunting_yard_algorithm#Detailed_examples
     public int Precedence =>
-        Value[0] switch
-        {
-            CalculatorConstants.PowerOfOperator => 4,
-            CalculatorConstants.MultiplyOperator => 3,
-             CalculatorConstants.DivideOperator => 3,
-            CalculatorConstants.AddOperator => 2,
-            CalculatorConstants.SubtractOperator => 2,
-            _ => 1
-        };
+        IsUnaryOperator
+            ? 5
+            : Value[0] switch
+              {
+                  CalculatorConstants.PowerOfOperator => 4,
+                  CalculatorConstants.MultiplicationOperator => 3,
+                  CalculatorConstants.DivisionOperator => 3,
+                  CalculatorConstants.RemainderOperator => 3,
+                  CalculatorConstants.AdditionOperator => 2,
+                  CalculatorConstants.SubtractionOperator => 2,
+                  _ => 1
+              };
 
     // https://en.wikipedia.org/wiki/Operator_associativity
     public Associativity Associativity =>
-        Value == "^"
+        Value == "^" || IsUnaryOperator
             ? Associativity.Right
             : Associativity.Left;
 }

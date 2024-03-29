@@ -8,12 +8,11 @@ public class Preprocessor
             .Replace("\t", string.Empty)
             .Replace("\r", string.Empty)
             .Replace("\n", string.Empty)
-            .Replace("x", CalculatorConstants.MultiplyOperator.ToString())
-            .Replace("×", CalculatorConstants.MultiplyOperator.ToString())
-            .Replace("÷", CalculatorConstants.DivideOperator.ToString())
-            .Replace("%", CalculatorConstants.DivideOperator.ToString())
-            .Replace("+", CalculatorConstants.AddOperator.ToString())
-            .Replace("−", CalculatorConstants.SubtractOperator.ToString())
+            .Replace("x", CalculatorConstants.MultiplicationOperator.ToString())
+            .Replace("×", CalculatorConstants.MultiplicationOperator.ToString())
+            .Replace("÷", CalculatorConstants.DivisionOperator.ToString())
+            .Replace("+", CalculatorConstants.AdditionOperator.ToString())
+            .Replace("−", CalculatorConstants.SubtractionOperator.ToString())
             + CalculatorConstants.Space;
 
         var doubleSpace = new string(CalculatorConstants.Space, 2);

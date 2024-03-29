@@ -9,16 +9,25 @@ public class CalculationBuilder()
         if (!double.TryParse(value, out _))
             throw new CalculatorException(position,$"Expected number.  Not {value}.  Check calculation and try again.");
 
-        _tokens.Add(new(position, TokenType.Number, value));
+        _tokens.Add(new(position, TokenType.Operand, value));
         return this;
     }
 
-    public CalculationBuilder AddOperator(int position, char value)
+    public CalculationBuilder AddBinaryOperator(int position, char value)
     {
-        if (!CalculatorConstants.Operators.Contains(value))
-            throw new CalculatorException(position, $"Expected operator.  Not {value}.  Check calculation and try again.");
+        if (!CalculatorConstants.BinaryOperators.Contains(value))
+            throw new CalculatorException(position, $"Expected binary operator.  Not {value}.  Check calculation and try again.");
 
-        _tokens.Add(new(position, TokenType.Operator, value.ToString()));
+        _tokens.Add(new(position, TokenType.BinaryOperator, value.ToString()));
+        return this;
+    }
+
+    public CalculationBuilder AddUnaryOperator(int position, char value)
+    {
+        if (!CalculatorConstants.UnaryOperators.Contains(value))
+            throw new CalculatorException(position, $"Expected unary operator.  Not {value}.  Check calculation and try again.");
+
+        _tokens.Add(new(position, TokenType.UnaryOperator, value.ToString()));
         return this;
     }
 

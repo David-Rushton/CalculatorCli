@@ -57,12 +57,12 @@ public class InfixValidator
             // TODO: Add test case and/or consider.
             if (tokens.Count() == 1)
             {
-                if (first.Type is not TokenType.Number)
+                if (first.Type is not TokenType.Operand)
                     issues.Add((first, "Expected number."));
             }
             else
             {
-                if (first.Type is not (TokenType.Number or TokenType.LeftParenthesis))
+                if (first.Type is not (TokenType.Operand or TokenType.LeftParenthesis))
                     issues.Add((first, "Expected number or opens parenthesis."));
 
                 if (first.Type is TokenType.LeftParenthesis)
@@ -74,10 +74,10 @@ public class InfixValidator
         {
             var expected = new Dictionary<TokenType, HashSet<TokenType>>
             {
-                { TokenType.Number, [TokenType.Operator, TokenType.LeftParenthesis, TokenType.RightParenthesis] },
-                { TokenType.Operator, [TokenType.Number, TokenType.LeftParenthesis] },
-                { TokenType.LeftParenthesis, [TokenType.Number, TokenType.LeftParenthesis] },
-                { TokenType.RightParenthesis, [TokenType.Operator, TokenType.RightParenthesis] },
+                { TokenType.Operand, [TokenType.BinaryOperator, TokenType.LeftParenthesis, TokenType.RightParenthesis] },
+                { TokenType.BinaryOperator, [TokenType.Operand, TokenType.LeftParenthesis] },
+                { TokenType.LeftParenthesis, [TokenType.Operand, TokenType.LeftParenthesis] },
+                { TokenType.RightParenthesis, [TokenType.BinaryOperator, TokenType.RightParenthesis] },
             };
 
             var last = tokens.First();
@@ -107,9 +107,9 @@ public class InfixValidator
 
             bool MaybeUnaryOperation(CalculationToken currnet, CalculationToken last) =>
                 last.IsOperator
-                && last.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator
+                && last.Value[0] is CalculatorConstants.AdditionOperator or CalculatorConstants.SubtractionOperator
                 && currnet.IsOperator
-                && currnet.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator;
+                && currnet.Value[0] is CalculatorConstants.AdditionOperator or CalculatorConstants.SubtractionOperator;
 
             static string GetExpected(HashSet<TokenType> tokenTypes) =>
                 tokenTypes.Humanize(tt => tt.Humanize(LetterCasing.LowerCase), "or");

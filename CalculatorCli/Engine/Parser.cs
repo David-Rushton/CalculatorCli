@@ -33,6 +33,7 @@ public class Parser(InfixValidator validator, Preprocessor preprocessor, Calcula
     {
         var numberBuffer = new StringBuilder();
         var numberBufferStart = -1;
+        var lastIsOperator = false;
 
         VerboseConsole.WriteLine($"canonical infix notation: {infixExpression}");
 
@@ -40,9 +41,6 @@ public class Parser(InfixValidator validator, Preprocessor preprocessor, Calcula
         {
             var character = infixExpression[i];
             var position = i + 1;
-
-            if (!CalculatorConstants.ValidCharacters.Contains(character))
-                throw new CalculatorException(position, $"Invalid character. {character} is not valid calculation character.  Please check calculation and try again.");
 
             if (ShouldYieldBuffer(character))
             {
@@ -54,14 +52,28 @@ public class Parser(InfixValidator validator, Preprocessor preprocessor, Calcula
                 }
 
                 if (CalculatorConstants.Operators.Contains(character))
-                    calculationBuilder.AddOperator(position, character);
+                {
+                    if (lastIsOperator && CalculatorConstants.UnaryOperators.Contains(character))
+                    {
+                        calculationBuilder.AddUnaryOperator(position, character);
+                        continue;
+                    }
+
+                    calculationBuilder.AddBinaryOperator(position, character);
+                    lastIsOperator = true;
+                }
 
                 if (CalculatorConstants.Parentheses.Contains(character))
+                {
                     calculationBuilder.AddParenthesis(position, character);
+                    lastIsOperator = false;
+                }
 
                 // Whitespace is swallowed.
                 continue;
             }
+
+            lastIsOperator = false;
 
             if (numberBufferStart == -1)
                 numberBufferStart = position;

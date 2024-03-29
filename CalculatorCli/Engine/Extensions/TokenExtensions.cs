@@ -14,7 +14,7 @@ public static class TokenExtensions
 
         while (input.TryDequeue(out var token))
         {
-            if (token.Type is TokenType.Number)
+            if (token.Type is TokenType.Operand)
                 output.Enqueue(token);
 
             if (token.IsOperator)
