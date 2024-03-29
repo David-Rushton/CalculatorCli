@@ -37,15 +37,15 @@ public class InfixValidator
     }
 
     public bool ContainsInvalidTokenSequence(
-        IEnumerable<CalculationToken> tokens, out Dictionary<string, CalculationToken> invalidTokens)
+        IEnumerable<CalculationToken> tokens, out List<(CalculationToken token, string issue)> invalidTokens)
     {
-        var issues = new List<(CalculationToken token, string description)>();
+        var issues = new List<(CalculationToken token, string issue)>();
         var parenthesisLevel = 0;
 
         TestFirstTokenValid();
         TestRemainingTokensValid();
 
-        invalidTokens = issues.ToDictionary(k => k.description, v => v.token);
+        invalidTokens = issues;
 
         return !invalidTokens.Any();
 
@@ -105,11 +105,11 @@ public class InfixValidator
             if (parenthesisLevel > 0)
                 issues.Add((last, "Missing closing parenthesis."));
 
-            bool MaybeUnaryOperation(CalculationToken currnet, CalculationToken last) =>
+            bool MaybeUnaryOperation(CalculationToken current, CalculationToken last) =>
                 last.IsOperator
                 && last.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator
-                && currnet.IsOperator
-                && currnet.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator;
+                && current.IsOperator
+                && current.Value[0] is CalculatorConstants.AddOperator or CalculatorConstants.SubtractOperator;
 
             static string GetExpected(HashSet<TokenType> tokenTypes) =>
                 tokenTypes.Humanize(tt => tt.Humanize(LetterCasing.LowerCase), "or");

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -74,32 +75,29 @@ public class CalculationExceptionFormatter
 
     public void PrettyPrint(InvalidInfixExpressionException e)
     {
-        var colours = new[]
-        {
-            "255:100:100",
-            "100:255:100",
-            "255:0:255",
-            "255:255:100",
-            "172:172:172"
-        };
-        var issueColour = new Dictionary<string, string>();
+        // Each issue is underlined with a distinct colour.
+        // We cannot underline a single token with two colours.
+        // We _could_ merge issues (i.e. red = x, blue = y, green = x & y).
+        // We _could_ use other styles (i.e bold = x, blue = y, bold blue = x & y).
+        // But I suspect this will make the input harder to read.
+        // For now we pick the first issue reported for any token and discard the rest.
 
-        var distinctIssues = e.InvalidTokens.Select(it => it.Key).Distinct();
-        foreach (var issue in distinctIssues)
-            issueColour[issue] = colours[issueColour.Count % 5];
-
-        var invalidTokens = e.InvalidTokens.Values.Select(v => v);
-
+        var tokenIssues = e
+            .TokenIssues
+            .GroupBy(ti => ti.token)
+            .ToDictionary(k => k.Key, v => v.First().issue);
+        var invalidTokens = tokenIssues.Select(ti => ti.Key).ToList();
+        var issues = tokenIssues.Select(ti => ti.Value).ToList();
+        var issueColours = GetIssueColours(issues);
         var buffer = new StringBuilder();
 
+        // build output.
         foreach (var token in e.Tokens)
         {
             if (invalidTokens.Contains(token))
             {
-                // TODO: Refactor this mess.
-                // May require a 2 pass solution, where we wrap tokens.
-                var issue = " ?????? ";
-                var underlineRgb = CurlyUnderline.Replace("<RGB>", issueColour[issue]);
+                var issue = tokenIssues[token];
+                var underlineRgb = CurlyUnderline.Replace("<RGB>", issueColours[issue]);
                 buffer.Append($"{underlineRgb}{token.Value}{AnsiReset}");
             }
             else
@@ -110,12 +108,31 @@ public class CalculationExceptionFormatter
             buffer.Append(CalculatorConstants.Space);
         }
 
+        // write.
         AnsiConsole.WriteLine(buffer.ToString());
 
-        foreach (var issue in distinctIssues)
+        foreach (var issue in issues)
         {
-            var issueRgb = issueColour[issue].Replace(":", ",");
-            AnsiConsole.MarkupLine($"[red]Error[/] [rgb({issueRgb})]{issue}[/]");
+            var issueRgb = issueColours[issue].Replace(":", ",");
+            AnsiConsole.MarkupLine($"[rgb({issueRgb})]Error[/] {issue}[/]");
+        }
+
+        // Assigns a colour to each issue.
+        static Dictionary<string, string> GetIssueColours(IEnumerable<string> issues)
+        {
+            string[] colours = [
+                "255:100:100",
+                "100:255:100",
+                "255:0:255",
+                "255:255:100",
+                "172:172:172"];
+
+            var issueColour = new Dictionary<string, string>();
+
+            foreach (var issue in issues)
+                issueColour[issue] = colours[issueColour.Count % 5];
+
+            return issueColour;
         }
     }
 
