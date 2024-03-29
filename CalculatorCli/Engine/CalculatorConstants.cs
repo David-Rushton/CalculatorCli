@@ -24,7 +24,8 @@ public class CalculatorConstants
         AdditionOperator,
         SubtractionOperator,
         MultiplicationOperator,
-        DivisionOperator];
+        DivisionOperator,
+        RemainderOperator];
 
     public static readonly char[] UnaryOperators = [
         PlusOperator,
@@ -37,7 +38,7 @@ public class CalculatorConstants
 
     public static readonly char[] ValidCharacters = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        PowerOfOperator, AdditionOperator, SubtractionOperator, MultiplicationOperator, DivisionOperator,
+        PowerOfOperator, AdditionOperator, SubtractionOperator, MultiplicationOperator, DivisionOperator, RemainderOperator,
         PlusOperator, MinusOperator,
         LeftParentheses, RightParentheses,
         Space, DecimalPoint];
