@@ -5,9 +5,9 @@ public class Preprocessor
     public string Process(string infixCalculationSegments)
     {
         var result = infixCalculationSegments
-            .Replace("\t", string.Empty)
-            .Replace("\r", string.Empty)
-            .Replace("\n", string.Empty)
+            .Replace("\t", CalculatorConstants.Space.ToString())
+            .Replace("\r", CalculatorConstants.Space.ToString())
+            .Replace("\n", CalculatorConstants.Space.ToString())
             .Replace("x", CalculatorConstants.MultiplyOperator.ToString())
             .Replace("×", CalculatorConstants.MultiplyOperator.ToString())
             .Replace("÷", CalculatorConstants.DivideOperator.ToString())

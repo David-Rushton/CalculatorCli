@@ -5,7 +5,7 @@ namespace CalculatorCli.Engine;
 public class Calculator(Parser parser)
 {
     /// <summary>
-    /// Calculates the product from a sequence of reverse Polish notation tokens.
+    /// Calculates the product of a series of reverse Polish notation tokens.
     /// </summary>
     /// <exception cref="CalculatorException"/>
     public double Calculate(string infixStatement)
@@ -17,8 +17,6 @@ public class Calculator(Parser parser)
         var rnpNotation = string.Join(CalculatorConstants.Space.ToString(), rpnTokens.Select(t => t.Value));
 
         VerboseConsole.WriteLine($"Canonical rnp notation: {rnpNotation}");
-
-        VerboseConsole.WriteLine($"canonical rnp notation: {rpnNotation}");
 
         foreach (var token in rpnTokens)
         {
