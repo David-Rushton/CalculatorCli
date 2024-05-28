@@ -36,12 +36,12 @@ public class Calculator(Parser parser)
             Debug.Assert(token.Value.Length == 1);
             var result = token.Value[0] switch
             {
-                CalculatorConstants.AdditionOperator       => x + y,
-                CalculatorConstants.SubtractionOperator    => x - y,
-                CalculatorConstants.MultiplicationOperator => x * y,
-                CalculatorConstants.DivisionOperator       => x / y,
-                CalculatorConstants.RemainderOperator      => x % y,
-                CalculatorConstants.PowerOfOperator        => Math.Pow(x, y),
+                CalculatorConstants.AdditionOperator     => x + y,
+                CalculatorConstants.SubtractionOperator  => x - y,
+                CalculatorConstants.MultiplyOperator     => x * y,
+                CalculatorConstants.DivideOperator       => x / y,
+                CalculatorConstants.ModulusOperator      => x % y,
+                CalculatorConstants.PowerOfOperator      => Math.Pow(x, y),
                 _ => throw new CalculatorException(token.Position, "Expected operator")
             };
 

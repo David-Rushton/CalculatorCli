@@ -70,9 +70,9 @@ public readonly record struct CalculationToken(
             : Value[0] switch
               {
                   CalculatorConstants.PowerOfOperator => 4,
-                  CalculatorConstants.MultiplicationOperator => 3,
-                  CalculatorConstants.DivisionOperator => 3,
-                  CalculatorConstants.RemainderOperator => 3,
+                  CalculatorConstants.MultiplyOperator => 3,
+                  CalculatorConstants.DivideOperator => 3,
+                  CalculatorConstants.ModulusOperator => 3,
                   CalculatorConstants.AdditionOperator => 2,
                   CalculatorConstants.SubtractionOperator => 2,
                   _ => 1

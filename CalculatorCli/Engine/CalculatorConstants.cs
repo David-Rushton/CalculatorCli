@@ -12,11 +12,11 @@ public class CalculatorConstants
     public const char PowerOfOperator = '^';
     public const char AdditionOperator = '+';
     public const char SubtractionOperator = '-';
-    public const char MultiplicationOperator = '*';
-    public const char DivisionOperator = '/';
-    public const char RemainderOperator = '%';
-    public const char PlusOperator = '+';
-    public const char MinusOperator = '-';
+    public const char MultiplyOperator = '*';
+    public const char DivideOperator = '/';
+    public const char ModulusOperator = '%';
+    public const char AddOperator = '+';
+    public const char SubtractOperator = '-';
 
     public static readonly char[] Parentheses = [
         LeftParentheses,
@@ -26,13 +26,13 @@ public class CalculatorConstants
         PowerOfOperator,
         AdditionOperator,
         SubtractionOperator,
-        MultiplicationOperator,
-        DivisionOperator,
-        RemainderOperator];
+        MultiplyOperator,
+        DivideOperator,
+        ModulusOperator];
 
     public static readonly char[] UnaryOperators = [
-        PlusOperator,
-        MinusOperator];
+        AddOperator,
+        SubtractOperator];
 
     public static readonly char[] Operators =
         BinaryOperators
@@ -41,8 +41,8 @@ public class CalculatorConstants
 
     public static readonly char[] ValidCharacters = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        PowerOfOperator, AdditionOperator, SubtractionOperator, MultiplicationOperator, DivisionOperator, RemainderOperator,
-        PlusOperator, MinusOperator,
+        PowerOfOperator, AdditionOperator, SubtractionOperator, MultiplyOperator, DivideOperator, ModulusOperator,
+        AddOperator, SubtractOperator,
         LeftParentheses, RightParentheses,
         Space, DecimalPoint];
 }
