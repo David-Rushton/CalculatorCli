@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using CalculatorCli.Engine.Extensions;
 
 namespace CalculatorCli.Engine;
@@ -26,26 +28,29 @@ public class Calculator(Parser parser)
                 continue;
             }
 
-            // TODO: It might be better to unary operation at parse time
-            // https://stackoverflow.com/questions/2431863/infix-to-postfix-and-unary-binary-operators
-            var y = stack.PopAndParseOrDefault();
-            var x = stack.PopAndParseOrDefault();
-            var result = token.Value switch
+            var y = stack.PopAndParse();
+            var x = token.IsBinaryOperator
+                ? stack.PopAndParse()
+                : 0;
+
+            Debug.Assert(token.Value.Length == 1);
+            var result = token.Value[0] switch
             {
-                "+" => x + y,
-                "-" => x - y,
-                "*" => x * y,
-                "/" => x / y,
-                "^" => Math.Pow(x, y),
+                CalculatorConstants.AdditionOperator       => x + y,
+                CalculatorConstants.SubtractionOperator    => x - y,
+                CalculatorConstants.MultiplicationOperator => x * y,
+                CalculatorConstants.DivisionOperator       => x / y,
+                CalculatorConstants.RemainderOperator      => x % y,
+                CalculatorConstants.PowerOfOperator        => Math.Pow(x, y),
                 _ => throw new CalculatorException(token.Position, "Expected operator")
             };
 
             VerboseConsole.WriteLine($"- {x} {token.Value} {y} = {result}");
 
-            stack.Push(new(token.Position, TokenType.Number, result.ToString()));
+            stack.Push(new(token.Position, TokenType.Operand, result.ToString()));
         }
 
         VerboseConsole.WriteLine(string.Empty);
-        return stack.PopAndParseOrDefault();
+        return stack.PopAndParse();
     }
 }

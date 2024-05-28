@@ -18,9 +18,9 @@ public class ParserTests
         var tokens = _parser.Parse("3 + 4");
         var expected = new[]
         {
-            new CalculationToken(Position: 1, TokenType.Number, "3"),
-            new CalculationToken(Position: 3, TokenType.Operator, "+"),
-            new CalculationToken(Position: 5, TokenType.Number, "4")
+            new CalculationToken(Position: 1, TokenType.Operand, "3"),
+            new CalculationToken(Position: 3, TokenType.BinaryOperator, "+"),
+            new CalculationToken(Position: 5, TokenType.Operand, "4")
         };
 
         Assert.That(tokens, Is.EqualTo(expected));

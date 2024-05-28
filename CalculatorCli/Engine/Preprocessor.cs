@@ -20,6 +20,6 @@ public class Preprocessor
         while (result.Contains(doubleSpace))
             result = result.Replace(doubleSpace, CalculatorConstants.Space.ToString());
 
-        return result;
+        return result!;
     }
 }

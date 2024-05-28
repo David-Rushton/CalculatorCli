@@ -1,9 +1,3 @@
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-
-using CalculatorCli.Engine.DTOs;
-
 namespace CalculatorCli.Formatters;
 
 /// <summary>
@@ -19,6 +13,8 @@ public class CalculationExceptionFormatter
     {
         switch (e)
         {
+            //TODO: Add support for CalculatorException
+            // Or fold exception into InvalidInfixCharactersException.
             case InvalidInfixCharactersException invalidCharactersException:
                 PrettyPrint(invalidCharactersException);
                 break;

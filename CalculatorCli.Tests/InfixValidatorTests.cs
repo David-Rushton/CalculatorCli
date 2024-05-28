@@ -89,17 +89,17 @@ public class InfixValidatorTests
         {
             if (double.TryParse(value, out _))
             {
-                yield return new CalculationToken(Position: -1, TokenType.Number, value);
+                yield return new CalculationToken(Position: -1, TokenType.Operand, value);
                 continue;
             }
 
             yield return value switch
             {
-                "+" => new CalculationToken(Position: -1, TokenType.Operator, value),
-                "-" => new CalculationToken(Position: -1, TokenType.Operator, value),
-                "/" => new CalculationToken(Position: -1, TokenType.Operator, value),
-                "*" => new CalculationToken(Position: -1, TokenType.Operator, value),
-                "^" => new CalculationToken(Position: -1, TokenType.Operator, value),
+                "+" => new CalculationToken(Position: -1, TokenType.BinaryOperator, value),
+                "-" => new CalculationToken(Position: -1, TokenType.BinaryOperator, value),
+                "/" => new CalculationToken(Position: -1, TokenType.BinaryOperator, value),
+                "*" => new CalculationToken(Position: -1, TokenType.BinaryOperator, value),
+                "^" => new CalculationToken(Position: -1, TokenType.BinaryOperator, value),
                 "(" => new CalculationToken(Position: -1, TokenType.LeftParenthesis, value),
                 ")" => new CalculationToken(Position: -1, TokenType.RightParenthesis, value),
                 _ => throw new ArgumentOutOfRangeException(nameof(value), $"Expected value infix character.  Not: {value}.")
