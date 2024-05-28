@@ -8,7 +8,7 @@ The calculation engine describes the steps taken to convert user input into eith
 ## Steps
 
 Each of the steps is wrapped in a try/catch statement.  When any of the steps fails an error report
-is generated from the expcetion.  It is then printed to the console.  If all the steps succeed the
+is generated from the exception.  It is then printed to the console.  If all the steps succeed the
 result is returned to the user.  
 
 Where possible we throw custom exceptions.  These contain as much details as possible, so we can
@@ -53,12 +53,25 @@ Converts the infix expression into a series of tokens.
 
 ### Infix Token Validator
 
-Checks the tokens form a valid sequence.  
+Checks the tokens form a valid sequence. Checks include:
+
+- Rejects invalid input tokens, like `banana` from this example: `1 + banana`
+- Expression starts with a valid toke type (number, opening parenthesis or unary operator)
+- Left and right parenthesis are balanced
+- Each token is followed by an expected token type
+  Example: a binary operator must be followed by a operand or opening parenthesis
 
 ### Postfix Converter
 
 Takes a series of infix tokens and converts into a series of postfix tokens.
 
+I choose infix as the input format because it is widely used and well understood.  However postfix is 
+more precise and, in my opinion, easier to calculate.  We convert to simplify the final step.
+
+Implements the [shunting yard algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm).
+
 ### Calculator
 
 Convert a series of postfix tokens into a result.
+
+This is pretty printed to the user.
